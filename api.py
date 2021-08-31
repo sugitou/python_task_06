@@ -1,6 +1,7 @@
 import requests
 import urllib
-
+import numpy as np
+import pandas as pd
 
 def set_param(id, keyword):
     # 6-2
@@ -27,10 +28,15 @@ def set_param(id, keyword):
     # 6-4
     param = {
         "format" : "json",
-        "keyword" : keyword,
         "applicationId" : id,
         "hits" : 30,
-        "page" : 1
+        "page" : 1,
+        "age" : 20,
+        "carrier" : 0,
+        "sex" : 0
+        # 指定するとエラー？
+        # "genreId" : "100316"
+        # "period" : "realtime"
     }
     return param
 
@@ -53,7 +59,26 @@ def output_data(resp):
     #     print('maxPrice:' + ' ¥' + str(prdct['Product']['salesMaxPrice']))
 
     # 6-4
-    print()
+    # for文を回してdictを作る
+    item_key = ['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId']
+    item_list = []
+    for i in range(0, len(resp['Items'])):
+        tmp_item = {}
+        item = resp['Items'][i]['Item']
+        for key, value in item.items():
+            if key in item_key:
+                tmp_item[key] = str(value)
+        item_list.append(tmp_item.copy())
+
+    # データフレームを作成
+    items_df = pd.DataFrame(item_list)
+    # 列の順番を入れ替える
+    items_df = items_df.reindex(columns=['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId'])
+    # 列名と行番号を変更する:列名は日本語に、行番号は1からの連番にする
+    items_df.columns = ['ランキング', '商品名', '商品価格', '商品説明文', '商品URL', 'ジャンルID']
+    items_df.index = np.arange(1, 31)
+    # csv出力
+    items_df.to_csv('./rakuten_mayqueen.csv')
 
 def main():
     keyword = "鬼滅"
@@ -62,7 +87,7 @@ def main():
     # 6-3 最安値と最高値
     # url = 'https://app.rakuten.co.jp/services/api/Product/Search/20170426'
     # 6-4 ランキング
-    url = ''
+    url = 'https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20170628'
     app_id = 1046134668193624354
 
     params = set_param(app_id, keyword)
