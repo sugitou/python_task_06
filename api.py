@@ -67,18 +67,15 @@ def output_data(resp):
         item = resp['Items'][i]['Item']
         for key, value in item.items():
             if key in item_key:
-                tmp_item[key] = str(value)
+                tmp_item[key] = value
         item_list.append(tmp_item.copy())
 
     # データフレームを作成
     items_df = pd.DataFrame(item_list)
     # 列の順番を入れ替える
-    items_df = items_df.reindex(columns=['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId'])
-    # 列名と行番号を変更する:列名は日本語に、行番号は1からの連番にする
-    items_df.columns = ['ランキング', '商品名', '商品価格', '商品説明文', '商品URL', 'ジャンルID']
-    items_df.index = np.arange(1, 31)
-    # csv出力
-    items_df.to_csv('./rakuten_mayqueen.csv')
+    items_df = items_df.to_csv('./rakuten_ranking.csv',
+    columns=['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId'])
+
 
 def main():
     keyword = "鬼滅"
