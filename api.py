@@ -3,7 +3,7 @@ import urllib
 import numpy as np
 import pandas as pd
 
-def set_param(id, keyword):
+def set_param(id, keyword=''):
     # 6-2
     # param = {
     #     "format" : "json",
@@ -72,9 +72,11 @@ def output_data(resp):
 
     # データフレームを作成
     items_df = pd.DataFrame(item_list)
-    # 列の順番を入れ替える
+    # ヘッダー変更
+    # items_df.columns = ['ランキング', '商品名', '商品価格', '説明文', '商品URL', 'ジャンルID']
+    # csvに出力
     items_df = items_df.to_csv('./rakuten_ranking.csv',
-    columns=['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId'])
+                                columns=['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId'])
 
 
 def main():
@@ -89,6 +91,7 @@ def main():
 
     params = set_param(app_id, keyword)
     resp = get_api(url, params)
+    # print(resp)
 
     output_data(resp)
 
