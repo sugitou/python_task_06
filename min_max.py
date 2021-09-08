@@ -1,4 +1,4 @@
-import api
+from api import get_api
 
 
 def min_max_param(id, keyword):
@@ -21,15 +21,15 @@ def min_max_output(resp):
         print('maxPrice:' + ' ¥' + str(prdct['Product']['salesMaxPrice']))
 
 
-def main():
+def mm_main():
     keyword = "鬼滅"
     url = 'https://app.rakuten.co.jp/services/api/Product/Search/20170426'
     app_id = 1046134668193624354
 
     params = min_max_param(app_id, keyword)
-    resp = api.get_api(url, params)
+    resp = get_api(url, params)
 
     min_max_output(resp)
 
 
-main()
+mm_main()

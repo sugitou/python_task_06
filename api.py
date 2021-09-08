@@ -30,7 +30,7 @@ def output(resp):
         print('itemPrice:' + ' ￥' + str(item['Item']['itemPrice']))
 
 
-def main():
+def api_main():
     keyword = "鬼滅"
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
     app_id = 1046134668193624354
@@ -41,4 +41,4 @@ def main():
     output(resp)
 
 
-main()
+api_main()
