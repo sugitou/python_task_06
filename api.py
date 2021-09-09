@@ -1,21 +1,28 @@
 import requests
 import urllib
 import numpy as np
+import os
 import pandas as pd
 import pprint
 
+from spreadsheet_manager import SpreadsheetManager
+from dotenv import load_dotenv
+# .envファイルの内容を読み込みます
+load_dotenv()
 
-def set_param(id, keyword=''):
+RAKUTEN_API_ID = os.environ["RAKUTEN_API_ID"]
+SPREADSHEET_ID = os.environ["SPREADSHEET_ID"]
+
+def set_param(keyword):
     param = {
         "format" : "json",
         "keyword" : keyword,
-        "applicationId" : id,
+        "applicationId" : int(RAKUTEN_API_ID),
         # "availability" : 0,
         # "hits" : 30,
         # "page" : 1,
         # "sort" : "-updateTimestamp"
     }
-
     return param
 
 
@@ -36,19 +43,22 @@ def output(resp):
                 tmp_item[key] = value
         item_list.append(tmp_item.copy())
     
-    pprint.pprint(item_list)
+    print(item_list)
     return item_list
 
 
-def api_main():
+def main():
     keyword = "鬼滅"
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
-    app_id = 1046134668193624354
 
-    params = set_param(app_id, keyword)
+    params = set_param(keyword)
     resp = get_api(url, params)
 
     items = output(resp)
+    ss = SpreadsheetManager()
+    ss.connect_by_sheetname(SPREADSHEET_ID, "item_list")
+    ss.bulk_insert(items)
 
 
-api_main()
+if __name__ == "__main__":
+   main()

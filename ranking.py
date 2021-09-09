@@ -50,4 +50,5 @@ def rank_main():
     ranking_output(resp)
 
 
-rank_main()
+if __name__ == "__main__":
+   rank_main()

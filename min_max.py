@@ -2,7 +2,6 @@ from api import get_api
 
 
 def min_max_param(id, keyword):
-    # 6-3
     param = {
         "format" : "json",
         "keyword" : keyword,
@@ -32,4 +31,5 @@ def mm_main():
     min_max_output(resp)
 
 
-mm_main()
+if __name__ == "__main__":
+   mm_main()
