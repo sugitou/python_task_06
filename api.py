@@ -10,18 +10,14 @@ from dotenv import load_dotenv
 # .envファイルの内容を読み込みます
 load_dotenv()
 
-RAKUTEN_API_ID = os.environ["RAKUTEN_API_ID"]
+RAKUTEN_API_ID = int(os.environ["RAKUTEN_API_ID"])
 SPREADSHEET_ID = os.environ["SPREADSHEET_ID"]
 
-def set_param(keyword):
+def set_param(keyword=''):
     param = {
         "format" : "json",
         "keyword" : keyword,
-        "applicationId" : int(RAKUTEN_API_ID),
-        # "availability" : 0,
-        # "hits" : 30,
-        # "page" : 1,
-        # "sort" : "-updateTimestamp"
+        "applicationId" : RAKUTEN_API_ID,
     }
     return param
 
@@ -43,12 +39,11 @@ def output(resp):
                 tmp_item[key] = value
         item_list.append(tmp_item.copy())
     
-    print(item_list)
     return item_list
 
 
 def main():
-    keyword = "鬼滅"
+    keyword = input('キーワードを入力してください。')
     url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
 
     params = set_param(keyword)
