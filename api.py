@@ -27,7 +27,7 @@ def get_api(url, params):
     return result.json()
 
 
-def output(resp):
+def extract(resp):
     # for文を回してdictを作る
     item_key = ['itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId']
     item_list = []
@@ -49,7 +49,7 @@ def main():
     params = set_param(keyword)
     resp = get_api(url, params)
 
-    items = output(resp)
+    items = extract(resp)
     ss = SpreadsheetManager()
     ss.connect_by_sheetname(SPREADSHEET_ID, "item_list")
     ss.bulk_insert(items)
