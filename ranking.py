@@ -35,10 +35,11 @@ def ranking_output(resp):
     # print(item_list)
     items_df = pd.DataFrame(item_list)
     # ヘッダー変更
-    # items_df.columns = ['ランキング', '商品名', '商品価格', '説明文', '商品URL', 'ジャンルID']
+    items_df.columns = ['ランキング', '商品名', '商品価格', '説明文', '商品URL', 'ジャンルID']
+    items_df.index = np.arange(1, 31)
     # csvに出力
     items_df = items_df.to_csv('./rakuten_ranking.csv',
-                                columns=['rank', 'itemName', 'itemPrice', 'itemCaption', 'itemUrl', 'genreId'])
+                                columns=['ランキング', '商品名', '商品価格', '説明文', '商品URL', 'ジャンルID'])
 
 def rank_main():
     url = 'https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20170628'
